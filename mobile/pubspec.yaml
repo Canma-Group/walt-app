@@ -1,0 +1,166 @@
+name: banking_app
+description: "A new Flutter project."
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.0
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.8
+  
+  # State management
+  flutter_bloc: ^9.1.1
+  bloc: ^9.1.0
+  equatable: ^2.0.7
+  
+  # Firebase & Backend
+  firebase_core: ^3.8.1
+  firebase_auth: ^5.3.3
+  cloud_firestore: ^5.5.2
+  cloud_functions: ^5.2.2
+  firebase_storage: ^12.4.5
+  
+  # Blockchain & Web3
+  web3dart: ^2.7.3
+  web3auth_flutter: ^6.3.0
+  
+  # Network and storage
+  http: ^1.6.0
+  flutter_secure_storage: ^10.0.0
+  shared_preferences: ^2.5.4
+  
+  # UI components
+  google_fonts: ^6.3.3
+  crypto_icons: ^1.0.0
+  carousel_slider: ^5.1.1
+  another_flushbar: ^1.12.32
+  gap: ^3.0.1
+  
+  # Utilities
+  intl: ^0.20.2
+  url_launcher: ^6.3.2
+  image_picker: ^1.2.1
+  flutter_svg: ^2.2.3
+  crypto: ^3.0.5
+  image: ^4.5.4
+  connectivity_plus: ^5.0.2
+  
+  # QR Scanner
+  mobile_scanner: ^5.2.3
+  permission_handler: ^11.3.1
+  
+  # QR Code Generator
+  qr_flutter: ^4.1.0
+  
+  # Share
+  share_plus: ^10.1.4
+  
+  # NFC
+  nfc_manager: ^4.1.1
+  convert: ^3.1.1
+  
+  # BLE (Bluetooth Low Energy)
+  flutter_blue_plus: ^1.35.2
+  flutter_ble_peripheral: ^2.0.1
+  
+  # Local storage for offline data
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  
+  # Location for Near Sync feature
+  geolocator: ^13.0.2
+  firebase_database: ^11.3.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.13.1
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # Assets configuration
+  assets:
+    - assets/
+    - assets/images/
+    - assets/icons/
+    - assets/images/Homepage/
+
+    - assets/icons/homepage/
+    - assets/icons/homepage/cardbalance.png
+    - assets/icons/homepage/QRScan.png
+    - assets/icons/homepage/Swap.png
+    - assets/icons/homepage/P2P.png
+    - assets/icons/homepage/NearSync.png
+    - assets/icons/homepage/SplitBill.png
+    - assets/icons/homepage/LISK.png
+    - assets/icons/homepage/pol.png
+    - assets/icons/homepage/Ethereum.png
+    - assets/icons/ScanQris/
+    - assets/icons/FiturTransfer/
+    - assets/images/FiturTransfer/
+    - assets/icons/ProfileUsers/
+    - assets/images/Banking/
+    - assets/images/Wallet/
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/to/resolution-aware-images
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/to/asset-from-package
+
+  # Fonts will be handled by Google Fonts package
+  # fonts:
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/to/font-from-package
+
+# Flutter Launcher Icons configuration
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "assets/images/Wallet/Logo.png"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/images/Wallet/Logo.png"

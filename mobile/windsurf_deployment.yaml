@@ -1,0 +1,5 @@
+project_id: kandidat-wallet-banking
+framework: flutter
+site_name: Kandidat Wallet Banking App
+build_command: flutter build web --release
+publish_directory: build/web

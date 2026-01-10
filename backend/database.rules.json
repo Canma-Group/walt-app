@@ -1,0 +1,42 @@
+{
+  "rules": {
+    "near_sync": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "$walletAddress": {
+        ".validate": "newData.hasChildren(['userId', 'walletAddress', 'latitude', 'longitude', 'lastUpdated', 'isOnline'])",
+        "userId": {
+          ".validate": "newData.isString()"
+        },
+        "walletAddress": {
+          ".validate": "newData.isString()"
+        },
+        "name": {
+          ".validate": "newData.isString()"
+        },
+        "profilePicture": {
+          ".validate": "newData.isString() || !newData.exists()"
+        },
+        "latitude": {
+          ".validate": "newData.isNumber() && newData.val() >= -90 && newData.val() <= 90"
+        },
+        "longitude": {
+          ".validate": "newData.isNumber() && newData.val() >= -180 && newData.val() <= 180"
+        },
+        "lastUpdated": {
+          ".validate": "newData.val() === now"
+        },
+        "isOnline": {
+          ".validate": "newData.isBoolean()"
+        }
+      },
+      ".indexOn": ["lastUpdated", "latitude", "longitude"]
+    },
+    "contacts": {
+      "$walletAddress": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    }
+  }
+}

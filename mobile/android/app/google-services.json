@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "575615376354",
+    "project_id": "canma-wallet",
+    "storage_bucket": "canma-wallet.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:575615376354:android:79d3a45dbf102dd0ff37bb",
+        "android_client_info": {
+          "package_name": "com.bankingapp.banking_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "575615376354-fiknodiqun9cn76l4bbii0vpsomtcb4d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bankingapp.banking_app",
+            "certificate_hash": "3040d2532ab92535972f92130fea4a182a1f21ba"
+          }
+        },
+        {
+          "client_id": "575615376354-hpj71km130kup2a4cghgm8e7bvuviivo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7O3Y3BPtz0zU2GKXHZQawhMact44UZwY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "575615376354-hpj71km130kup2a4cghgm8e7bvuviivo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "575615376354-gu7q8ff4sne1uli2bcabrssomln5bag2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bankingapp.bankingApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

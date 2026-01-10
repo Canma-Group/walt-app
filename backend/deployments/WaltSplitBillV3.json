@@ -1,0 +1,13 @@
+{
+  "contractName": "WaltSplitBillV3",
+  "address": "0x49c19A8fD9f35f858DFfF6F2c0DE77a062d71B7c",
+  "network": "liskSepolia",
+  "chainId": 4202,
+  "deployer": "0x8de2dc121229FfA255742Dd65000e34231f6031D",
+  "supportedTokens": {
+    "LSK": "0x4270A0c8676A10ab8CbE3e92bFd187D94C8f248e",
+    "POL": "0xEE412e79eB7F565Ec9e7c8A1b0a7eC27b63fbc5e",
+    "ETH": "0x292D54495d4C9Af56D86fA6cAF25591037EF80b3"
+  },
+  "deployedAt": "2026-01-08T09:28:47.415Z"
+}

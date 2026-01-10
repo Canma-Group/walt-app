@@ -1,0 +1,15 @@
+{
+  "network": "liskSepolia",
+  "chainId": 4202,
+  "contractName": "CanmaSplitBillV5",
+  "contractAddress": "0xc534268892D1cD4d991b34197D2972f7855b8E42",
+  "feeReceiver": "0x8de2dc121229FfA255742Dd65000e34231f6031D",
+  "deployer": "0x8de2dc121229FfA255742Dd65000e34231f6031D",
+  "deployedAt": "2026-01-09T22:16:40.349Z",
+  "tokens": {
+    "LSK": "0x4270A0c8676A10ab8CbE3e92bFd187D94C8f248e",
+    "ETH": "0x292D54495d4C9Af56D86fA6cAF25591037EF80b3",
+    "POL": "0xEE412e79eB7F565Ec9e7c8A1b0a7eC27b63fbc5e"
+  },
+  "version": "5.0.0"
+}
