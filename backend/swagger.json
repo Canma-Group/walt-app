@@ -1,0 +1,467 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Canma Wallet API",
+    "description": "REST API untuk Canma Wallet - Lisk Crypto Banking dengan Web3Auth + Firebase Authentication",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Canma Wallet Support",
+      "email": "support@canmawallet.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://us-central1-canma-wallet.cloudfunctions.net/api",
+      "description": "Production server"
+    },
+    {
+      "url": "http://localhost:5001/canma-wallet/us-central1/api",
+      "description": "Local emulator"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Authentication",
+      "description": "Web3Auth + Firebase authentication endpoints"
+    },
+    {
+      "name": "Wallet",
+      "description": "Wallet and balance operations"
+    },
+    {
+      "name": "OnRamp",
+      "description": "Fiat to crypto onramp via QRIS"
+    },
+    {
+      "name": "Webhooks",
+      "description": "External webhook endpoints"
+    }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "Login dengan Web3Auth + Firebase",
+        "description": "Authenticate user menggunakan Firebase ID Token dari Web3Auth. Endpoint ini akan create/update user di Firestore dan return user data.",
+        "operationId": "login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              },
+              "example": {
+                "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjE2Nz..."
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "userId": "abc123xyz",
+                    "email": "ellycia.alvarety@gmail.com",
+                    "name": "ellycia alvarety",
+                    "photoURL": "https://lh3.googleusercontent.com/...",
+                    "walletAddress": "0xB3392ec03F03F6e1dc3db76C28b7fdd14Bb43561",
+                    "createdAt": "2025-12-28T10:00:00.000Z",
+                    "lastLogin": "2025-12-28T10:00:00.000Z",
+                    "token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjE2Nz..."
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - missing idToken",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create-qris": {
+      "post": {
+        "tags": ["OnRamp"],
+        "summary": "Create QRIS payment untuk top-up",
+        "description": "Generate QRIS code untuk user top-up. Wallet address akan otomatis tersimpan di Firestore saat first top-up.",
+        "operationId": "createQRIS",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateQRISRequest"
+              },
+              "example": {
+                "amountInIDR": 50000,
+                "userWalletAddress": "0xB3392ec03F03F6e1dc3db76C28b7fdd14Bb43561"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "QRIS created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QRISResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - invalid amount or wallet address"
+          },
+          "401": {
+            "description": "Unauthorized - missing or invalid token"
+          }
+        }
+      }
+    },
+    "/balance/{walletAddress}": {
+      "get": {
+        "tags": ["Wallet"],
+        "summary": "Get LSK balance untuk wallet address",
+        "description": "Query balance dari Lisk blockchain untuk wallet address tertentu.",
+        "operationId": "getBalance",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "walletAddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^0x[a-fA-F0-9]{40}$"
+            },
+            "description": "Ethereum/Lisk wallet address (0x...)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Balance retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BalanceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid wallet address format"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/xendit-webhook": {
+      "post": {
+        "tags": ["Webhooks"],
+        "summary": "Xendit payment webhook",
+        "description": "Receive payment notifications dari Xendit. Endpoint ini akan process payment dan transfer LSK ke user wallet.",
+        "operationId": "xenditWebhook",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/XenditWebhookPayload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Webhook processed successfully"
+          },
+          "401": {
+            "description": "Unauthorized - invalid webhook token"
+          }
+        }
+      }
+    },
+    "/swagger.json": {
+      "get": {
+        "tags": ["Documentation"],
+        "summary": "Get Swagger/OpenAPI specification",
+        "description": "Returns the OpenAPI 3.0 specification for this API",
+        "operationId": "getSwagger",
+        "responses": {
+          "200": {
+            "description": "Swagger JSON returned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "tags": ["Documentation"],
+        "summary": "Get API information",
+        "description": "Returns API information, version, and available endpoints",
+        "operationId": "getApiInfo",
+        "responses": {
+          "200": {
+            "description": "API information returned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "Canma Wallet API"
+                    },
+                    "version": {
+                      "type": "string",
+                      "example": "1.0.0"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "endpoints": {
+                      "type": "object"
+                    },
+                    "documentation": {
+                      "type": "string",
+                      "example": "/swagger.json"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Firebase ID Token dari Web3Auth"
+      }
+    },
+    "schemas": {
+      "LoginRequest": {
+        "type": "object",
+        "required": ["idToken"],
+        "properties": {
+          "idToken": {
+            "type": "string",
+            "description": "Firebase ID Token dari Web3Auth",
+            "example": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjE2Nz..."
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/UserData"
+          }
+        }
+      },
+      "UserData": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "Firebase User UID",
+            "example": "abc123xyz"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "ellycia.alvarety@gmail.com"
+          },
+          "name": {
+            "type": "string",
+            "description": "User display name dari Google account",
+            "example": "ellycia alvarety"
+          },
+          "photoURL": {
+            "type": "string",
+            "format": "uri",
+            "description": "Profile picture URL dari Google"
+          },
+          "walletAddress": {
+            "type": "string",
+            "description": "Web3Auth wallet address (akan null sampai user first top-up)",
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "example": "0xB3392ec03F03F6e1dc3db76C28b7fdd14Bb43561"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastLogin": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "token": {
+            "type": "string",
+            "description": "Firebase ID Token untuk authenticated requests"
+          }
+        }
+      },
+      "CreateQRISRequest": {
+        "type": "object",
+        "required": ["amountInIDR", "userWalletAddress"],
+        "properties": {
+          "amountInIDR": {
+            "type": "integer",
+            "minimum": 10000,
+            "description": "Amount dalam Rupiah (minimum 10,000)",
+            "example": 50000
+          },
+          "userWalletAddress": {
+            "type": "string",
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "description": "User's Web3Auth wallet address",
+            "example": "0xB3392ec03F03F6e1dc3db76C28b7fdd14Bb43561"
+          }
+        }
+      },
+      "QRISResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "qrisUrl": {
+                "type": "string",
+                "description": "QRIS code string untuk di-scan",
+                "example": "00020101021226650013ID..."
+              },
+              "externalId": {
+                "type": "string",
+                "description": "Unique payment ID",
+                "example": "CANMA-abc123-1735381234"
+              },
+              "amount": {
+                "type": "integer",
+                "example": 50000
+              },
+              "expiresAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      },
+      "BalanceResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "balance": {
+                "type": "string",
+                "description": "LSK balance (in LSK, not Wei)",
+                "example": "10.500000"
+              },
+              "currency": {
+                "type": "string",
+                "example": "LSK"
+              },
+              "walletAddress": {
+                "type": "string",
+                "pattern": "^0x[a-fA-F0-9]{40}$"
+              }
+            }
+          }
+        }
+      },
+      "XenditWebhookPayload": {
+        "type": "object",
+        "properties": {
+          "external_id": {
+            "type": "string",
+            "description": "Payment external ID"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["COMPLETED", "PENDING", "FAILED"],
+            "description": "Payment status"
+          },
+          "amount": {
+            "type": "integer",
+            "description": "Amount in IDR"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
+          "error": {
+            "type": "string",
+            "description": "Error message"
+          }
+        }
+      }
+    }
+  }
+}
+

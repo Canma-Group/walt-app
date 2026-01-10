@@ -1,0 +1,15 @@
+{
+  "network": "liskSepolia",
+  "chainId": 4202,
+  "contractName": "waltSplitBillV5",
+  "contractAddress": "0x998C402E2d5A55EC599C84B7B1C446732b29E5F3",
+  "feeReceiver": "0x8de2dc121229FfA255742Dd65000e34231f6031D",
+  "deployer": "0x8de2dc121229FfA255742Dd65000e34231f6031D",
+  "deployedAt": "2026-01-09T22:18:18.106Z",
+  "tokens": {
+    "LSK": "0x4270A0c8676A10ab8CbE3e92bFd187D94C8f248e",
+    "ETH": "0x292D54495d4C9Af56D86fA6cAF25591037EF80b3",
+    "POL": "0xEE412e79eB7F565Ec9e7c8A1b0a7eC27b63fbc5e"
+  },
+  "version": "5.0.0"
+}

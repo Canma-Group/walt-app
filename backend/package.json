@@ -1,0 +1,49 @@
+{
+  "name": "canma-wallet-functions",
+  "version": "1.0.0",
+  "description": "Firebase Cloud Functions for Canma Wallet - Lisk Crypto Banking",
+  "engines": {
+    "node": "20"
+  },
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "start": "docker-compose up -d && timeout /t 3 && tsc && node lib/server.js",
+    "start:server": "tsc && node lib/server.js",
+    "stop": "docker-compose down",
+    "dev": "npm run build:watch & npm run start:server",
+    "serve": "npm run start",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f postgres",
+    "deploy": "npm run build && firebase deploy --only functions",
+    "logs": "firebase functions:log",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.4.0",
+    "@types/pg": "^8.16.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "ethers": "^6.13.4",
+    "express": "^4.21.2",
+    "firebase-admin": "^12.7.0",
+    "firebase-functions": "^6.2.0",
+    "pg": "^8.16.3",
+    "solc": "^0.8.33",
+    "xendit-node": "^4.2.0"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.19.1",
+    "@typescript-eslint/parser": "^8.19.1",
+    "eslint": "^9.18.0",
+    "firebase-functions-test": "^3.3.0",
+    "hardhat": "^2.19.0",
+    "typescript": "^5.7.2"
+  },
+  "private": true
+}
