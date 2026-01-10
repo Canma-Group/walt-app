@@ -9,7 +9,7 @@
 
 **A Web3 mobile wallet integrating daily financial management and crypto assets into a single platform**
 
-[Live Demo](https://walt.rfrfrfrf.my.id) • [Documentation](https://walt.rfrfrfrf.my.id/docs) • [Smart Contracts](#smart-contracts)
+[Live Demo](https://walt.rfrfrfrf.my.id) • [Documentation](http://203.194.112.143:5172/docs) • [Smart Contracts](#smart-contracts)
 
 </div>
 
