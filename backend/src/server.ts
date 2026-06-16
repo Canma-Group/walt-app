@@ -135,6 +135,20 @@ app.post('/faucet/mint', async (req, res) => {
       });
     }
 
+    if (!ethers.isAddress(walletAddress)) {
+      return res.status(400).json({
+        success: false,
+        error: 'walletAddress is not a valid Ethereum address',
+      });
+    }
+
+    if (typeof amountIdr !== 'number' || !Number.isFinite(amountIdr) || amountIdr <= 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'amountIdr must be a positive number',
+      });
+    }
+
     // Validate coin
     const supportedCoins = faucet.getSupportedTokens();
     if (!supportedCoins.includes(coin.toUpperCase())) {
@@ -233,6 +247,20 @@ app.post('/qris/payments', async (req, res) => {
       return res.status(400).json({
         success: false,
         error: 'walletAddress, qrisPayload, and amountIdr are required',
+      });
+    }
+
+    if (!ethers.isAddress(walletAddress)) {
+      return res.status(400).json({
+        success: false,
+        error: 'walletAddress is not a valid Ethereum address',
+      });
+    }
+
+    if (typeof amountIdr !== 'number' || !Number.isFinite(amountIdr) || amountIdr <= 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'amountIdr must be a positive number',
       });
     }
 
