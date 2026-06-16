@@ -9,7 +9,7 @@
 
 **A Web3 mobile wallet integrating daily financial management and crypto assets into a single platform**
 
-[Live Demo](https://walt.rfrfrfrf.my.id) • [Documentation](http://203.194.112.143:5172/docs) • [Smart Contracts](#smart-contracts)
+[Live Demo](https://walt.rfrfrfrf.my.id) • [API Reference](backend/API_DOCUMENTATION.md) • [Smart Contracts](#smart-contracts)
 
 </div>
 
@@ -30,6 +30,16 @@ The app is designed to reduce the complexity of using multiple separate financia
 | **Peer-to-Peer Transfer** | Send funds to contacts with gas sponsorship via barter model. |
 | **NearSync (NFC)** | Transfer funds to nearby users via NFC for quick face-to-face transactions. |
 | **Split Bill** | Divide expenses among multiple people with smart contract escrow for fairness and transparency. |
+
+---
+
+## Screenshots
+
+> Add real app screenshots/GIFs here — this is the single highest-impact addition for a portfolio. Drop images in `docs/screenshots/` and reference them below.
+
+| Home | QRIS Pay | Swap | Split Bill |
+|------|----------|------|------------|
+| _add image_ | _add image_ | _add image_ | _add image_ |
 
 ---
 
@@ -96,30 +106,32 @@ All smart contracts are deployed on **Lisk Sepolia Testnet** (Chain ID: 4202) an
 
 ### Environment Variables
 
-Create `.env` file in `backend/` directory:
+Copy [`backend/.env.example`](backend/.env.example) to `backend/.env` and fill in your values. Never commit the real `.env` (it is gitignored).
 
 ```env
+# PostgreSQL
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=qris_payments
+DB_USER=qris_user
+DB_PASSWORD=your_db_password
+
 # Server
-PORT=3001
-NODE_ENV=production
+PORT=3000
 
-# Blockchain
-RPC_URL=https://rpc.sepolia-api.lisk.com
-CHAIN_ID=4202
-PRIVATE_KEY=your_operator_private_key
+# Escrow / wallets (generate fresh, never reuse or commit real values)
+ESCROW_MASTER_MNEMONIC=your_twelve_to_twentyfour_word_mnemonic
+DEPLOYER_PRIVATE_KEY=0x...
+HOT_WALLET_PRIVATE_KEY=0x...
 
-# Smart Contracts
-SPLITBILL_CONTRACT=0x998C402E2d5A55EC599C84B7B1C446732b29E5F3
-QRPAY_CONTRACT=0x4f11677bcF14FEEfD906Dd978a4E4Ad54b4Ce194
-SWAP_CONTRACT=0x31169C501C316Fa6ec2e4E483ab32C09F8337149
+# Xendit (QRIS settlement)
+XENDIT_API_KEY=xnd_development_...
 
-# Xendit (for QRIS settlement)
-XENDIT_SECRET_KEY=your_xendit_secret_key
-
-# Firebase (for auth)
-FIREBASE_PROJECT_ID=your_project_id
-FIREBASE_PRIVATE_KEY=your_firebase_key
-FIREBASE_CLIENT_EMAIL=your_client_email
+# Lisk Sepolia
+LISK_RPC_URL=https://rpc.sepolia-api.lisk.com
+LISK_CHAIN_ID=4202
+QRIS_ESCROW_V2_ADDRESS=0xda7c9CF0988547d6F88899A3a822630bAD52060d
+LSK_TOKEN_ADDRESS=0x4270A0c8676A10ab8CbE3e92bFd187D94C8f248e
 ```
 
 ---
@@ -135,11 +147,15 @@ cd backend
 # Install dependencies
 npm install
 
-# Development mode
+# Start Postgres (Docker) + compile TS + run server
+npm run start         # docker-compose up + tsc + node lib/server.js
+
+# Or development watch mode
 npm run dev
 
-# Production mode with PM2
-pm2 start server.js --name walt-backend
+# Production with PM2 (after `npm run build` compiles to lib/)
+npm run build
+pm2 start lib/server.js --name walt-backend
 pm2 save
 ```
 
@@ -247,14 +263,17 @@ User                    WaltApp                 Backend                 WaltQRPa
 
 ```
 walt-app/
-├── backend/                    # Node.js Backend
+├── backend/                    # Node.js + TypeScript Backend
 │   ├── contracts/              # Solidity Smart Contracts
 │   │   ├── CanmaSplitBillV5.sol
 │   │   ├── WaltQRPayV3.sol
 │   │   └── WaltSwapV2.sol
-│   ├── scripts/                # Deployment scripts
-│   ├── server.js               # Express server
-│   ├── hardhat.config.js       # Hardhat configuration
+│   ├── scripts/                # Deployment scripts (Hardhat)
+│   ├── src/
+│   │   ├── server.ts           # Express server (main entry)
+│   │   ├── services/           # QRIS, escrow, swap, faucet services
+│   │   └── config/             # Lisk / Xendit config
+│   ├── hardhat.config.cjs      # Hardhat configuration
 │   └── package.json
 │
 ├── mobile/                     # Flutter Mobile App
