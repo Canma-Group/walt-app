@@ -50,3 +50,21 @@ coverage/
 # Misc
 *.pem
 .cache/
+# --- security hardening (added by secret-scan cleanup) ---
+.env.*
+!.env.example
+!.env.sample
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+id_rsa
+id_dsa
+id_ed25519
+*.bak
+*.tfstate
+*.tfstate.*
+.npmrc
+.pypirc
+.netrc
